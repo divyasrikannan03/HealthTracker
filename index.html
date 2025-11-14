@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Tracker - Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+    <h1 class="mb-4">💪 Health Tracker Login</h1>
+    <div class="card p-4 shadow" style="width: 22rem;">
+      <div class="mb-3">
+        <input type="text" id="username" class="form-control" placeholder="Username" required>
+      </div>
+      <div class="mb-3">
+        <input type="password" id="password" class="form-control" placeholder="Password" required>
+      </div>
+      <button id="loginBtn" class="btn btn-primary w-100 mb-2">Login</button>
+      <button id="signupBtn" class="btn btn-outline-success w-100">Sign Up</button>
+      <div id="msg" class="mt-3 text-center small text-danger"></div>
+    </div>
+  </div>
+
+<script>
+const users = JSON.parse(localStorage.getItem('users') || '{}');
+const msg = document.getElementById('msg');
+
+document.getElementById('signupBtn').addEventListener('click', ()=>{
+  const u = username.value.trim();
+  const p = password.value.trim();
+  if(!u || !p){ msg.textContent = "Enter username and password"; return; }
+  if(users[u]){ msg.textContent = "User already exists"; return; }
+  users[u] = { password: p };
+  localStorage.setItem('users', JSON.stringify(users));
+  msg.textContent = "✅ Account created! Please login.";
+});
+
+document.getElementById('loginBtn').addEventListener('click', ()=>{
+  const u = username.value.trim();
+  const p = password.value.trim();
+  if(users[u] && users[u].password === p){
+    localStorage.setItem('activeUser', u);
+    window.location.href = 'dashboard.html';
+  } else {
+    msg.textContent = "❌ Invalid login details.";
+  }
+});
+</script>
+</body>
+</html>
